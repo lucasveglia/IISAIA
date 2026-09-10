@@ -31,4 +31,4 @@ Una página para seleccionar qué idioma se desea aprender, pero con la peor UI 
 
 ## Prompts
 
-El registro completo está en [prompts.md](prompts.md). Los que más pesaron son el primero, que fija el artefacto entero, y el del reordenamiento, que convirtió una animación que se mira en una interfaz que se opera.
+El registro completo está en [prompts.md](prompts.md).
