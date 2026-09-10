@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multilingo</title>
+    <style>
+        :root {
+            /* Variable CSS requerida para el fondo */
+            --bg: #7ac70c; 
+        }
+
+        body {
+            background-color: var(--bg);
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 20px;
+            color: white;
+        }
+
+        main {
+            /* Layout Flexbox amontonado */
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center; /* Centrado para que parezca un bloque de texto incomprensible */
+            align-content: flex-start;
+            gap: 0px;
+            
+            flex: 1;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Modificando el modelo de caja para frustrar */
+        button.lang-btn {
+            background-color: white;
+            color: black;
+            border: 0px;      /* Cero bordes */
+            margin: 0px;      /* Cero márgenes */
+            padding: 0px;     /* Cero padding para que parezcan la misma oración */
+            font-size: 16px;
+            cursor: pointer;
+            outline: none;
+            /* Eliminando cualquier feedback de interacción */
+            transition: none;
+        }
+
+        /* Sin hover ni feedback de foco */
+        button.lang-btn:hover,
+        button.lang-btn:focus,
+        button.lang-btn:active {
+            background-color: white;
+            color: black;
+            border: 0px;
+            outline: none;
+            box-shadow: none;
+        }
+
+        footer {
+            display: flex;
+            width: 100%;
+        }
+
+        button.action-btn {
+            flex: 1;
+            background-color: #f0f0f0; /* Color idéntico para todos */
+            color: #333;
+            border: 0px;
+            margin: 0px;
+            padding: 20px 5px;
+            font-size: 14px;
+            cursor: pointer;
+            outline: none;
+        }
+
+        button.action-btn:hover,
+        button.action-btn:active {
+            background-color: #f0f0f0; /* Sin feedback visual */
+        }
+
+        #volume-control {
+            display: flex;
+            justify-content: center;
+            font-size: 16px;
+            color: black;
+            margin: 0;
+            padding: 0;
+        }
+
+        #volume-control button {
+            background-color: transparent;
+            border: 0px;
+            margin: 0px;
+            padding: 0px;
+            font-size: 16px;
+            color: black;
+            cursor: pointer;
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1 id="site-title">Multilingo</h1>
+        <h2 id="site-subtitle">Selecciona que idioma quieres aprender</h2>
+    </header>
+
+    <main id="language-grid">
+        <button class="lang-btn" data-lang="zh" id="btn-zh">Chino</button>
+        <button class="lang-btn" data-lang="ru" id="btn-ru">Ruso</button>
+        <button class="lang-btn" data-lang="ar" id="btn-ar">Árabe</button>
+        <button class="lang-btn" data-lang="ja" id="btn-ja">Japonés</button>
+        <button class="lang-btn" data-lang="ko" id="btn-ko">Coreano</button>
+        <button class="lang-btn" data-lang="he" id="btn-he">Hebreo</button>
+        <button class="lang-btn" data-lang="es" id="btn-es">Español</button>
+        <button class="lang-btn" data-lang="de" id="btn-de">Alemán</button>
+        <button class="lang-btn" data-lang="fr" id="btn-fr">Francés</button>
+        <button class="lang-btn" data-lang="pt" id="btn-pt">Portugués</button>
+    </main>
+
+    <article id="volume-control"><span id="lbl-vol">volumen</span><button id="btn-mas">mas</button><button id="btn-menos">menos</button></article>
+
+    <footer>
+        <button class="action-btn" id="btn-accept">Aceptar</button>
+        <button class="action-btn" id="btn-back">Volver al anterior</button>
+        <button class="action-btn" id="btn-cancel">Cancelar</button>
+    </footer>
+
+    <script>
+        // Estado inicial de la aplicación ampliado
+        let state = {
+            currentLanguage: 'zh',
+            pendingLanguage: 'zh',
+            previousLanguage: 'zh',
+            volume: 100
+        };
+
+        // Diccionario de traducciones completo para frustrar al usuario
+        const translations = {
+            es: {
+                title: "Multilingo", subtitle: "Selecciona que idioma quieres aprender",
+                zh: "Chino", ru: "Ruso", ar: "Árabe", ja: "Japonés", ko: "Coreano",
+                he: "Hebreo", es: "Español", de: "Alemán", fr: "Francés", pt: "Portugués",
+                accept: "Aceptar", back: "Volver al anterior", cancel: "Cancelar",
+                vol: "volumen", mas: "mas", menos: "menos"
+            },
+            zh: {
+                title: "多语种", subtitle: "选择你想学的语言",
+                zh: "中文", ru: "俄语", ar: "阿拉伯语", ja: "日语", ko: "韩语",
+                he: "希伯来语", es: "西班牙语", de: "德语", fr: "法语", pt: "葡萄牙语",
+                accept: "接受", back: "返回上一步", cancel: "取消",
+                vol: "体积", mas: "加", menos: "减"
+            },
+            ru: {
+                title: "Мультилингво", subtitle: "Выберите язык, который хотите выучить",
+                zh: "Китайский", ru: "Русский", ar: "Арабский", ja: "Японский", ko: "Корейский",
+                he: "Иврит", es: "Испанский", de: "Немецкий", fr: "Французский", pt: "Португальский",
+                accept: "Принять", back: "Вернуться назад", cancel: "Отмена",
+                vol: "объем", mas: "плюс", menos: "минус"
+            },
+            ar: {
+                title: "مالتيلينجو", subtitle: "اختر اللغة التي تريد تعلمها",
+                zh: "الصينية", ru: "الروسية", ar: "العربية", ja: "اليابانية", ko: "الكورية",
+                he: "العبرية", es: "الإسبانية", de: "الألمانية", fr: "الفرنسية", pt: "البرتغالية",
+                accept: "قبول", back: "الرجوع للسابق", cancel: "إلغاء",
+                vol: "حجم", mas: "زائد", menos: "ناقص"
+            },
+            ja: {
+                title: "マルチリンゴ", subtitle: "学びたい言語を選択してください",
+                zh: "中国語", ru: "ロシア語", ar: "アラビア語", ja: "日本語", ko: "韓国語",
+                he: "ヘブライ語", es: "スペイン語", de: "ドイツ語", fr: "フランス語", pt: "ポルトガル語",
+                accept: "承認", back: "前に戻る", cancel: "キャンセル",
+                vol: "音量", mas: "プラス", menos: "マイナス"
+            },
+            ko: {
+                title: "멀티링고", subtitle: "배우고 싶은 언어를 선택하세요",
+                zh: "중국어", ru: "러시아어", ar: "아랍어", ja: "일본어", ko: "한국어",
+                he: "히브리어", es: "스페인어", de: "독일어", fr: "프랑스어", pt: "포르투갈어",
+                accept: "수락", back: "이전으로 돌아가기", cancel: "취소",
+                vol: "볼륨", mas: "더하기", menos: "빼기"
+            },
+            he: {
+                title: "מולטילינגו", subtitle: "בחר איזו שפה אתה רוצה ללמוד",
+                zh: "סינית", ru: "רוסית", ar: "ערבית", ja: "יפנית", ko: "קוריאנית",
+                he: "עברית", es: "ספרדית", de: "גרמנית", fr: "צרפתית", pt: "פורטוגזית",
+                accept: "קבל", back: "חזור לקודם", cancel: "בטל",
+                vol: "נפח", mas: "פלוס", menos: "מינוס"
+            },
+            de: {
+                title: "Multilingo", subtitle: "Wählen Sie die Sprache, die Sie lernen möchten",
+                zh: "Chinesisch", ru: "Russisch", ar: "Arabisch", ja: "Japanisch", ko: "Koreanisch",
+                he: "Hebräisch", es: "Spanisch", de: "Deutsch", fr: "Französisch", pt: "Portugiesisch",
+                accept: "Akzeptieren", back: "Zurückgehen", cancel: "Abbrechen",
+                vol: "Lautstärke", mas: "plus", menos: "minus"
+            },
+            fr: {
+                title: "Multilingo", subtitle: "Choisissez la langue que vous souhaitez apprendre",
+                zh: "Chinois", ru: "Russe", ar: "Arabe", ja: "Japonais", ko: "Coréen",
+                he: "Hébreu", es: "Espagnol", de: "Allemand", fr: "Français", pt: "Portugais",
+                accept: "Accepter", back: "Retourner au précédent", cancel: "Annuler",
+                vol: "volume", mas: "plus", menos: "moins"
+            },
+            pt: {
+                title: "Multilingo", subtitle: "Selecione qual idioma você quer aprender",
+                zh: "Chinês", ru: "Russo", ar: "Árabe", ja: "Japonês", ko: "Coreano",
+                he: "Hebraico", es: "Espanhol", de: "Alemão", fr: "Francês", pt: "Português",
+                accept: "Aceitar", back: "Voltar ao anterior", cancel: "Cancelar",
+                vol: "volume", mas: "mais", menos: "menos"
+            }
+        };
+
+        // Mutación del DOM basada en el estado actual
+        function updateDOM() {
+            const currentTexts = translations[state.currentLanguage];
+            
+            // Textos del header
+            document.getElementById('site-title').textContent = currentTexts.title;
+            document.getElementById('site-subtitle').textContent = currentTexts.subtitle;
+
+            // Textos de los botones de idioma
+            document.getElementById('btn-zh').textContent = currentTexts.zh;
+            document.getElementById('btn-ru').textContent = currentTexts.ru;
+            document.getElementById('btn-ar').textContent = currentTexts.ar;
+            document.getElementById('btn-ja').textContent = currentTexts.ja;
+            document.getElementById('btn-ko').textContent = currentTexts.ko;
+            document.getElementById('btn-he').textContent = currentTexts.he;
+            document.getElementById('btn-es').textContent = currentTexts.es;
+            document.getElementById('btn-de').textContent = currentTexts.de;
+            document.getElementById('btn-fr').textContent = currentTexts.fr;
+            document.getElementById('btn-pt').textContent = currentTexts.pt;
+
+            // Textos de los botones de acción del footer
+            document.getElementById('btn-accept').textContent = currentTexts.accept;
+            document.getElementById('btn-back').textContent = currentTexts.back;
+            document.getElementById('btn-cancel').textContent = currentTexts.cancel;
+
+            // Mutando los textos del volumen para que se camuflen
+            document.getElementById('lbl-vol').textContent = currentTexts.vol;
+            document.getElementById('btn-mas').textContent = currentTexts.mas;
+            document.getElementById('btn-menos').textContent = currentTexts.menos;
+        }
+
+        // Asignación de Listeners de Eventos
+        const langButtons = document.querySelectorAll('.lang-btn');
+        langButtons.forEach(button => {
+            button.addEventListener('click', (event) => {
+                // Actualizamos solo el estado pendiente, sin mutar el DOM
+                state.pendingLanguage = event.target.getAttribute('data-lang');
+            });
+        });
+
+        // Evento para el botón Aceptar: guarda el estado previo, aplica el pendiente y muta el DOM
+        document.getElementById('btn-accept').addEventListener('click', () => {
+            state.previousLanguage = state.currentLanguage;
+            state.currentLanguage = state.pendingLanguage;
+            updateDOM();
+        });
+
+        // Evento para el botón Volver: revierte el estado al idioma anterior y muta el DOM
+        document.getElementById('btn-back').addEventListener('click', () => {
+            state.currentLanguage = state.previousLanguage;
+            updateDOM();
+        });
+
+        // Inicialización: Forzamos la primera mutación del DOM al idioma inicial (Chino)
+        updateDOM();
+
+        let audioCtx;
+
+        function playTone() {
+            // Instanciamos el contexto de audio solo tras el primer click (regla de los navegadores)
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+
+            const oscillator = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+
+            oscillator.type = 'sine'; // Tono puro para que parezca de error del sistema
+            oscillator.frequency.value = 800; // Los 800Hz solicitados
+
+            // Calculamos el volumen (estado de 0 a 100 convertido a 0.0 a 1.0)
+            const currentVolume = Math.max(0, Math.min(100, state.volume)) / 100;
+            
+            // Bajamos un poco la ganancia general por seguridad (0.2), pero la proporción se mantiene
+            gainNode.gain.setValueAtTime(currentVolume * 0.2, audioCtx.currentTime);
+
+            oscillator.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+
+            oscillator.start();
+            oscillator.stop(audioCtx.currentTime + 1); // Exactamente 1 segundo
+        }
+
+        // Le pegamos el evento del sonido a TODOS los botones de la página
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('click', playTone);
+        });
+
+        // Eventos para mutar el estado del volumen de a 1 punto
+        document.getElementById('btn-mas').addEventListener('click', () => {
+            state.volume += 1;
+        });
+
+        document.getElementById('btn-menos').addEventListener('click', () => {
+            state.volume -= 1;
+        });
+
+    </script>
+</body>
+</html>
