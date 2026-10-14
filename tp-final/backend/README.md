@@ -57,7 +57,7 @@ Al arrancar, `init_db()` en [`main.py`](main.py) ejecuta [`database.sql`](databa
 
 | Tabla | Columnas Principales | Descripción |
 | :--- | :--- | :--- |
-| **`users`** | `id`, `email` (UNIQUE), `password` | Usuarios registrados. Incluye por defecto `demo@edulayout.org`, `alumno1@fiuba.ar` y `alumno2@fiuba.ar` (contraseña `1234`). |
+| **`users`** | `id`, `email` (UNIQUE), `password` | Usuarios registrados. Incluye por defecto la cuenta de prueba `demo@edulayout.org` (contraseña `1234`). |
 | **`pdks`** | `id`, `name`, `drc_rules`, `is_custom`, `user_id` | Reglas de diseño (JSON) por capa del proceso (`GPDK045`). |
 | **`layouts`** | `id`, `name`, `pdk_id`, `user_id`, `is_checked_out`, `checked_out_by` | Celdas/diseños guardados y su estado de bloqueo exclusivo actual. |
 | **`layout_versions`** | `id`, `layout_id`, `version_number`, `comment`, `data` | Historial inmutable de versiones de cada layout (`UNIQUE(layout_id, version_number)`), con comentario descriptivo y geometrías en JSON. |
@@ -104,5 +104,5 @@ Al arrancar, `init_db()` en [`main.py`](main.py) ejecuta [`database.sql`](databa
 
 ## 🧹 Mantenimiento de la Base de Datos (`simulator.db`)
 
-- **Reiniciar la base de datos desde cero**: Detén el servidor, elimina el archivo `backend/simulator.db` y vuelve a ejecutar `python main.py`. Se regenerará automáticamente con los 3 usuarios demo y las 3 celdas estándar.
-- **Edición puntual**: Puedes abrir `backend/simulator.db` con **DB Browser for SQLite** o la extensión **SQLite Viewer** de VS Code para inspeccionar o borrar filas específicas de `users`, `layouts` o `layout_versions`.
+- **Reiniciar la base de datos desde cero**: Detener el servidor, eliminar el archivo `backend/simulator.db` y volver a ejecutar `python main.py`. Se regenerará automáticamente con el usuario demo y las celdas estándar.
+- **Edición puntual**: Se puede abrir `backend/simulator.db` con **DB Browser for SQLite** o la extensión **SQLite Viewer** de VS Code para inspeccionar o editar filas específicas de `users`, `layouts` o `layout_versions`.

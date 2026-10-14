@@ -55,10 +55,8 @@ def init_db():
     if "comment" not in ver_cols:
         conn.execute("ALTER TABLE layout_versions ADD COLUMN comment TEXT DEFAULT ''")
 
-    # Asegurar usuarios iniciales para demos con contraseña por defecto
+    # Asegurar usuario inicial demo con contraseña por defecto
     conn.execute("INSERT OR IGNORE INTO users (id, email, password) VALUES (1, 'demo@edulayout.org', '1234')")
-    conn.execute("INSERT OR IGNORE INTO users (id, email, password) VALUES (2, 'alumno1@fiuba.ar', '1234')")
-    conn.execute("INSERT OR IGNORE INTO users (id, email, password) VALUES (3, 'alumno2@fiuba.ar', '1234')")
     # Actualizar contraseñas si eran null o vacías
     conn.execute("UPDATE users SET password = '1234' WHERE password IS NULL OR password = ''")
 

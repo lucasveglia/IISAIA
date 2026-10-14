@@ -7,9 +7,7 @@ export default function LoginModal() {
   const [emailInput, setEmailInput] = useState('');
   const [passwordInput, setPasswordInput] = useState('1234');
   const [availableUsers, setAvailableUsers] = useState([
-    { id: 1, email: 'demo@edulayout.org' },
-    { id: 2, email: 'alumno1@fiuba.ar' },
-    { id: 3, email: 'alumno2@fiuba.ar' }
+    { id: 1, email: 'demo@edulayout.org' }
   ]);
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');

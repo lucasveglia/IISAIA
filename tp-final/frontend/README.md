@@ -29,7 +29,7 @@ npm run lint
 ## 📂 Organización del Código (`src/`)
 
 ### 1. Componentes (`src/components/`)
-* **`auth/LoginModal.jsx`**: Pantalla de inicio de sesión con contraseña, selector rápido de cuentas de prueba (`demo@edulayout.org`, `alumno1@fiuba.ar`, `alumno2@fiuba.ar`) y creación automática de nuevas cuentas.
+* **`auth/LoginModal.jsx`**: Pantalla de inicio de sesión con contraseña, selector rápido de cuenta demo (`demo@edulayout.org`) y registro automático de nuevas cuentas.
 * **`header/Header.jsx`**: Barra superior con indicador del proyecto activo, estado del bloqueo (*Disponible*, *En edición por ti* o *Bloqueado por otro usuario*), accesos a DRC, LVS, Versiones y cambio de cuenta.
 * **`header/VersionsModal.jsx`**: Panel de control de versiones conectado a FastAPI/SQLite. Permite crear layouts, hacer **Checkout** (bloqueo exclusivo), hacer **Check-in** con validación DRC y comentarios descriptivos, y restaurar versiones anteriores en el canvas.
 * **`editor/LayoutCanvas.jsx`**: Lienzo interactivo basado en `react-konva` con zoom, paneo, grilla ajustable, dibujo de rectángulos, ruteo ortogonal (`path`), colocación automática de contactos/vías (`via`), sondas de nodos eléctricos (`probe`), regla de medición (`ruler`), marcadores DRC y banner de **Modo Solo Lectura** cuando otro usuario tiene el archivo en checkout.

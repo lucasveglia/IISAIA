@@ -50,10 +50,8 @@ CREATE TABLE IF NOT EXISTS layout_instances (
     FOREIGN KEY (child_layout_id)  REFERENCES layouts(id) ON DELETE CASCADE
 );
 
--- Datos iniciales: usuarios de prueba y PDK GPDK045
+-- Datos iniciales: usuario demo y PDK GPDK045
 INSERT OR IGNORE INTO users (id, email) VALUES (1, 'demo@edulayout.org');
-INSERT OR IGNORE INTO users (id, email) VALUES (2, 'alumno1@fiuba.ar');
-INSERT OR IGNORE INTO users (id, email) VALUES (3, 'alumno2@fiuba.ar');
 
 INSERT OR IGNORE INTO pdks (id, name, drc_rules, is_custom, user_id)
 VALUES (
